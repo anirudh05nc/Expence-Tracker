@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
     <link rel="stylesheet" href="/media/css/main.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" integrity="sha512-Evv84Mr4kqVGRNSgIGL/F/aIDqQb7xQ2vcrdIwxfjThSH8CSR7PBEakCr51Ck+w+/U6swU2Im1vVX0SVk9ABhg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
 </head>
 <body>
     <div class="container">
@@ -12,35 +13,29 @@
             <img src="https://i.ibb.co/jfScDTC/budget.png" alt="Expense Tracker" />
             <div class="balance-container">
                 <h2>Your Balance</h2>
-                <h2 id="balance" class="balance">${{current_balance.current_balance}}</h2>
+                <h2 id="balance" class="balance">${{available_balance}}</h2>
             </div>
         </div>
         <div class="inc-exp-container">
             <div>
                 <h4>Income</h4>
-                <p id="money-plus" class="money plus">+${{income}}</p>
+                <p id="money-plus" class="money plus">${{credit_amount}}</p>
             </div>
             <div>
                 <h4>Expenses</h4>
-                <p id="money-minus" class="money minus">${{expense}}</p>
+                <p id="money-minus" class="money minus">${{debit_amount}}</p>
             </div>
         </div>
         <h3>History</h3>
 
-
         <ul id="list" class="list">
-            {% for transaction in transactions %}
-
-            <li class="{% if transaction.expense_type == 'DEBIT' %} minus {% else %} plus {% endif %}">
-                {{transaction.description}} <span> {{transaction.amount}} </span>
-                <a class="delete-btn" href="{% url 'delete_transaction' transaction.id %}">
-                    <i class="fas fa-trash-alt"></i></a>
-            </li>
-
+            {% for transaction in tracking_history %}
+                <li class="{% if transaction.expense_type == 'DEBIT' %} minus {% else %} plus {% endif %}">
+                    {{transaction.description}} <span> {{transaction.amount}} </span>
+                    <a class="delete-btn" href="{% url 'delete_transaction' transaction.id %}">
+                        <i class="fa-solid fa-xmark"></i></a>
+                </li>
             {% endfor %}
-
-
-
         </ul>
 
 
@@ -63,5 +58,15 @@
     <div class="notification-container" id="notification">
         <p>Please add a description and amount</p>
     </div>
+
+    {% if messages %}
+        <script>
+            {% for message in messages %}
+                alert('{{message}}')
+            {% endfor %}
+        </script>
+    {% endif %}
+
+
 </body>
 </html>
